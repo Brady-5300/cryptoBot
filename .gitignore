@@ -1,13 +1,15 @@
 # Secrets: never commit. Real secrets live in %USERPROFILE%\.cryptobot\secrets.env
 .env
 *.env
-!config/secrets.example.env
 *.pem
 *.key
 secrets*
+# The template has no values and must be committed (after the rules above so it wins).
+!config/secrets.example.env
 
-# Data lives outside the repo (CRYPTOBOT_DATA_DIR); guard against accidents
-data/
+# Data lives outside the repo (CRYPTOBOT_DATA_DIR); guard against accidents.
+# Leading slash: only a top-level data/ folder, NOT the src/basis/data/ package.
+/data/
 *.parquet
 *.jsonl
 *.jsonl.zst

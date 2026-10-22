@@ -1,8 +1,10 @@
 # Non-secret configuration. Secrets come from the environment / secrets.env (see secrets.example.env).
 
 [paths]
-# Override with CRYPTOBOT_DATA_DIR. Keep this OUTSIDE OneDrive: sync fights constant appends.
-data_dir = "C:/cryptobot-data"
+# Override with CRYPTOBOT_DATA_DIR. "~" expands to the user's home on macOS and Windows.
+# Keep it out of synced folders (OneDrive/iCloud) and, on macOS, out of Desktop/Documents/
+# Downloads, which background launchd jobs can't access.
+data_dir = "~/cryptobot-data"
 
 [kalshi]
 env = "prod"                       # "prod" | "demo"; market data is recorded from prod (demo prices are unrealistic)

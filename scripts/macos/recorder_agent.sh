@@ -6,8 +6,9 @@
 #   scripts/macos/recorder_agent.sh restart    # e.g. after updating the code or secrets
 #   scripts/macos/recorder_agent.sh uninstall  # stop it and remove the plist
 #
-# The job runs under `caffeinate -is` so the Mac doesn't idle-sleep while it records.
-# Closing the lid still sleeps the Mac unless `sudo pmset -a disablesleep 1` (see the docs).
+# Sleep is handled system-wide with `sudo pmset -a disablesleep 1` (see the setup doc), not by
+# wrapping the job in caffeinate: launchd's SIGTERM must reach Python directly so the recorder
+# can flush and close its files on stop.
 set -euo pipefail
 
 LABEL="com.cryptobot.recorder"
@@ -41,7 +42,6 @@ write_plist() {
   <key>Label</key><string>$LABEL</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/bin/caffeinate</string><string>-is</string>
     <string>$PY</string><string>-m</string><string>basis.data.recorder</string>
   </array>
   <key>WorkingDirectory</key><string>$REPO</string>

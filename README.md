@@ -17,11 +17,11 @@ src/basis/
   data/recorder.py 24/7 recorder (Kalshi WS + public REST, Robinhood quotes)
   data/backfill.py public Kalshi history -> Parquet (1m candles, funding, trades)
   ops/             check (read-only env check), alerts (ntfy.sh)
-scripts/           Windows supervisor loop + scheduled-task installer
+scripts/           macos/recorder_agent.sh (launchd), Windows task scripts, robinhood_keygen.py
 tests/             unit tests; `-m network` hits public Kalshi endpoints
 ```
 
-## Setup (Windows)
+## Setup (Windows dev laptop; for the Mac recorder see docs/recorder-laptop-setup.md)
 
 The repo sits in OneDrive, so keep the venv, the data and the secrets **outside** it:
 
@@ -47,9 +47,10 @@ basis-backfill                 # 1m candles + funding history for all perps
 basis-record                   # Ctrl+C to stop; --duration N for a timed run
 ```
 
-24/7 on the spare laptop: run `scripts\install_recorder_task.ps1` once from an elevated
-PowerShell, disable sleep (`powercfg /change standby-timeout-ac 0`), and keep Windows time sync
-on. Set `NTFY_TOPIC` to get phone alerts when a stream goes stale or auth fails.
+The 24/7 recorder runs on a spare **Mac**: follow
+[docs/recorder-laptop-setup.md](docs/recorder-laptop-setup.md). It installs a launchd agent via
+`scripts/macos/recorder_agent.sh`. (`scripts/*.ps1` do the same on Windows with a scheduled
+task.) Set `NTFY_TOPIC` to get phone alerts when a stream goes stale or auth fails.
 
 ## Raw data format
 

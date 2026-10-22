@@ -35,8 +35,11 @@ def load_config(*paths: Path) -> dict[str, Any]:
     for p in (DEFAULT_CONFIG, *paths):
         with p.open("rb") as f:
             cfg = _deep_merge(cfg, tomllib.load(f))
+    paths = cfg.setdefault("paths", {})
     if env_dir := os.environ.get("CRYPTOBOT_DATA_DIR"):
-        cfg.setdefault("paths", {})["data_dir"] = env_dir
+        paths["data_dir"] = env_dir
+    if "data_dir" in paths:
+        paths["data_dir"] = str(Path(paths["data_dir"]).expanduser())
     return cfg
 
 
