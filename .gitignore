@@ -1,0 +1,29 @@
+# Secrets: never commit. Real secrets live in %USERPROFILE%\.cryptobot\secrets.env
+.env
+*.env
+!config/secrets.example.env
+*.pem
+*.key
+secrets*
+
+# Data lives outside the repo (CRYPTOBOT_DATA_DIR); guard against accidents
+data/
+*.parquet
+*.jsonl
+*.jsonl.zst
+*.duckdb
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+*.egg-info/
+dist/
+build/
+
+# Notebooks
+.ipynb_checkpoints/
